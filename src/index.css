@@ -4,25 +4,41 @@
 
 @layer base {
   :root {
-    --tg-theme-bg-color: #ffffff;
-    --tg-theme-text-color: #000000;
-    --tg-theme-hint-color: #707579;
-    --tg-theme-button-color: #3390ec;
-    --tg-theme-button-text-color: #ffffff;
-    --tg-theme-secondary-bg-color: #f4f4f5;
-    --tg-theme-link-color: #3390ec;
-  }
+    /* Brand gradient background */
+    --brand-blue-from:    #5CB3FF;
+    --brand-blue-to:      #2196F3;
 
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --tg-theme-bg-color: #212121;
-      --tg-theme-text-color: #ffffff;
-      --tg-theme-hint-color: #aaaaaa;
-      --tg-theme-button-color: #8774e1;
-      --tg-theme-button-text-color: #ffffff;
-      --tg-theme-secondary-bg-color: #181818;
-      --tg-theme-link-color: #8774e1;
-    }
+    /* Yellow accent family */
+    --brand-yellow:       #FFD700;
+    --brand-yellow-soft:  #FFE25C;
+    --brand-yellow-press: #F5C400;
+
+    /* Decorative */
+    --brand-cream:        #FFF9C4;
+
+    /* Text */
+    --brand-ink:          #1A2B4A;
+    --brand-text:         #FFFFFF;
+    --brand-text-muted:   rgba(255, 255, 255, 0.72);
+
+    /* Surfaces */
+    --brand-card:         rgba(255, 255, 255, 0.14);
+    --brand-card-border:  rgba(255, 255, 255, 0.28);
+    --brand-card-solid:   #FFFFFF;
+    --brand-card-text:    #1A2B4A;
+
+    /* Status */
+    --brand-danger:       #FF5252;
+    --brand-success:      #69F0AE;
+
+    /* tg-* aliases repointed to brand palette so untouched code still works */
+    --tg-theme-bg-color:          transparent;
+    --tg-theme-text-color:        #FFFFFF;
+    --tg-theme-hint-color:        rgba(255, 255, 255, 0.72);
+    --tg-theme-button-color:      #FFD700;
+    --tg-theme-button-text-color: #1A2B4A;
+    --tg-theme-secondary-bg-color: rgba(255, 255, 255, 0.14);
+    --tg-theme-link-color:        #FFD700;
   }
 
   html,
@@ -39,8 +55,6 @@
 
   body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif;
-    background-color: var(--tg-theme-bg-color);
-    color: var(--tg-theme-text-color);
     -webkit-user-select: none;
     user-select: none;
     -webkit-touch-callout: none;
@@ -67,15 +81,58 @@
     user-select: text;
     -webkit-touch-callout: default;
   }
+
+  /* Glassmorphism fallback for older WebView without backdrop-filter */
+  @supports not ((backdrop-filter: blur(2px)) or (-webkit-backdrop-filter: blur(2px))) {
+    .backdrop-blur-sm {
+      background-color: var(--brand-card-solid) !important;
+      color: var(--brand-card-text);
+    }
+  }
 }
 
 @layer utilities {
-  @keyframes letter-pop {
-    0%   { opacity: 0; transform: scale(0.85); }
-    60%  { opacity: 1; transform: scale(1.05); }
-    100% { opacity: 1; transform: scale(1); }
+  .app-bg {
+    background:
+      radial-gradient(circle at 50% 18%, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0) 55%),
+      linear-gradient(180deg, var(--brand-blue-from) 0%, var(--brand-blue-to) 100%);
   }
-  .letter-pop {
-    animation: letter-pop 220ms ease-out;
+
+  @keyframes letter-pop {
+    0%   { opacity: 0; transform: scale(0.8); filter: brightness(1.6); }
+    60%  { opacity: 1; transform: scale(1.08); filter: brightness(1.25); }
+    100% { opacity: 1; transform: scale(1); filter: brightness(1); }
+  }
+  .letter-pop { animation: letter-pop 280ms cubic-bezier(0.34, 1.56, 0.64, 1); }
+
+  @keyframes score-bump {
+    0%   { transform: scale(1); }
+    40%  { transform: scale(1.15); }
+    100% { transform: scale(1); }
+  }
+  .score-bump { animation: score-bump 300ms ease-out; }
+
+  @keyframes screen-mount {
+    0%   { opacity: 0; transform: translateY(4px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+  .screen-mount { animation: screen-mount 240ms ease-out; }
+
+  @keyframes trophy-bounce {
+    0%   { transform: translateY(0) rotate(0deg); }
+    35%  { transform: translateY(-26px) rotate(-6deg); }
+    65%  { transform: translateY(8px) rotate(4deg); }
+    100% { transform: translateY(0) rotate(0deg); }
+  }
+  .trophy-bounce { animation: trophy-bounce 700ms cubic-bezier(0.34, 1.56, 0.64, 1); }
+
+  @keyframes confetti-fall {
+    0%   { transform: translateY(-12vh) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(112vh) rotate(720deg); opacity: 0.9; }
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50%      { transform: translateY(-18px) rotate(5deg); }
   }
 }
