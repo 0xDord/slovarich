@@ -8,7 +8,7 @@ import {
   ROUND_SEC_OPTIONS,
   TARGET_SCORE_OPTIONS,
 } from '../types'
-import { PrimaryButton } from './PrimaryButton'
+import { BrandButton } from './BrandButton'
 
 interface Props {
   onStart: (config: GameConfig) => void
@@ -166,14 +166,14 @@ export function SetupScreen({ onStart }: Props) {
           нажимает свою кнопку «+1» внизу. Буквы обновляются каждый раунд.
         </div>
 
-        <PrimaryButton
+        <BrandButton
           onPress={handleStart}
           variant="primary"
           className="w-full h-14 text-lg flex items-center justify-center gap-2 shadow-md"
         >
           <Play className="w-5 h-5" />
           Начать игру
-        </PrimaryButton>
+        </BrandButton>
       </div>
     </div>
   )

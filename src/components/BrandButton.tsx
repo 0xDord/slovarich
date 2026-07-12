@@ -1,6 +1,6 @@
 import type { CSSProperties, ReactNode } from 'react'
 
-type Variant = 'primary' | 'danger' | 'neutral'
+type Variant = 'primary' | 'ghost' | 'danger'
 
 interface Props {
   onPress: () => void
@@ -9,25 +9,27 @@ interface Props {
   className?: string
   ariaLabel?: string
   disabled?: boolean
+  type?: 'button' | 'submit'
 }
 
 const VARIANT_CLASSES: Record<Variant, string> = {
-  primary: 'bg-tg-button text-tg-btn-text',
-  danger: 'bg-red-500 text-white',
-  neutral: 'bg-tg-sec-bg text-tg-text',
+  primary: 'bg-brand-yellow text-brand-ink shadow-brand-yellow',
+  ghost:   'bg-white/10 text-white border border-white/40 backdrop-blur-sm',
+  danger:  'bg-brand-danger text-white',
 }
 
-export function PrimaryButton({
+export function BrandButton({
   onPress,
   children,
   variant = 'primary',
   className = '',
   ariaLabel,
   disabled = false,
+  type = 'button',
 }: Props) {
   return (
     <button
-      type="button"
+      type={type}
       aria-label={ariaLabel}
       disabled={disabled}
       onPointerDown={(e) => {
@@ -36,7 +38,7 @@ export function PrimaryButton({
         onPress()
       }}
       style={{ touchAction: 'manipulation' } as CSSProperties}
-      className={`select-none rounded-2xl font-semibold transition-[filter,transform] duration-75 active:brightness-90 active:scale-[0.98] disabled:opacity-40 ${VARIANT_CLASSES[variant]} ${className}`}
+      className={`select-none rounded-2xl font-semibold transition-[filter,transform] duration-75 active:brightness-95 active:scale-[0.96] disabled:opacity-40 disabled:active:scale-100 ${VARIANT_CLASSES[variant]} ${className}`}
     >
       {children}
     </button>

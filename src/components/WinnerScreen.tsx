@@ -1,6 +1,6 @@
 import { Trophy, RotateCcw } from 'lucide-react'
 import type { PlayerId } from '../types'
-import { PrimaryButton } from './PrimaryButton'
+import { BrandButton } from './BrandButton'
 
 interface Props {
   winner: PlayerId
@@ -34,14 +34,14 @@ export function WinnerScreen({ winner, winnerName, scores, playerNames, onNewGam
           {playerNames[0]} · {playerNames[1]}
         </div>
       </div>
-      <PrimaryButton
+      <BrandButton
         onPress={onNewGame}
         variant="primary"
         className="w-full max-w-xs h-14 text-lg flex items-center justify-center gap-2"
       >
         <RotateCcw className="w-5 h-5" />
         Новая игра
-      </PrimaryButton>
+      </BrandButton>
     </div>
   )
 }
