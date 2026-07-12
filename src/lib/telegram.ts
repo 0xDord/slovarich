@@ -31,27 +31,9 @@ export function restoreVerticalSwipes() {
   try { WebApp.enableVerticalSwipes() } catch { /* ignore */ }
 }
 
-export function applyThemeParams() {
-  if (typeof document === 'undefined') return
-  const tp = WebApp.themeParams
-  if (!tp) return
-
-  const root = document.documentElement
-  const map: Array<[keyof typeof tp, string]> = [
-    ['bg_color', '--tg-theme-bg-color'],
-    ['text_color', '--tg-theme-text-color'],
-    ['hint_color', '--tg-theme-hint-color'],
-    ['button_color', '--tg-theme-button-color'],
-    ['button_text_color', '--tg-theme-button-text-color'],
-    ['secondary_bg_color', '--tg-theme-secondary-bg-color'],
-    ['link_color', '--tg-theme-link-color'],
-  ]
-  for (const [tgKey, cssVar] of map) {
-    const value = tp[tgKey]
-    if (typeof value === 'string' && value) {
-      root.style.setProperty(cssVar, value)
-    }
-  }
+export function applyThemeParams(): void {
+  // Brand palette is forced via :root tokens in src/index.css.
+  // Intentionally a no-op so Telegram's themeParams cannot override brand colors.
 }
 
 export function onThemeChanged(cb: () => void): () => void {
