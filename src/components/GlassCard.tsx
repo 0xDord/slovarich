@@ -1,9 +1,9 @@
-import type { ElementType, ReactNode } from 'react'
+import type { ReactNode } from 'react'
 
 interface Props {
   children: ReactNode
   className?: string
-  as?: ElementType
+  as?: 'div' | 'section' | 'label'
 }
 
 export function GlassCard({ children, className = '', as: Tag = 'div' }: Props) {
