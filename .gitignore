@@ -11,3 +11,4 @@ dist-ssr
 .env.local
 *.tsbuildinfo
 .vite
+.superpowers/sdd/*.md
