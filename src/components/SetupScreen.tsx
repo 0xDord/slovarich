@@ -13,7 +13,7 @@ import { BookLogo } from './BookLogo'
 import { BrandButton } from './BrandButton'
 import { GlassCard } from './GlassCard'
 import { SegmentedControl } from './SegmentedControl'
-import heroImage from '../../static/main_screen.png'
+import heroImage from '../../static/main_screen.jpg'
 
 interface Props {
   onStart: (config: GameConfig) => void
