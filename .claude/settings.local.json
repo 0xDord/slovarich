@@ -1,9 +1,14 @@
 {
   "permissions": {
     "allow": [
-      "WebSearch"
+      "WebSearch",
+      "Bash(git -C /Users/naualex/vibe_projects/tg_app_words add src/lib/brand.ts tailwind.config.js src/index.css)",
+      "Bash(git -C /Users/naualex/vibe_projects/tg_app_words commit -m \"feat\\(brand\\): add slovarich color tokens, tailwind extension, and utilities\")",
+      "Bash(git *)",
+      "Bash(npm test *)"
     ]
   },
+  "enableAllProjectMcpServers": true,
   "enabledMcpjsonServers": [
     "21st"
   ],
@@ -18,6 +23,5 @@
         "repo": "obra/superpowers"
       }
     }
-  },
-  "enableAllProjectMcpServers": true
+  }
 }
