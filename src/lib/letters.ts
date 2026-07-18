@@ -1,38 +1,31 @@
 import type { LetterPair } from '../types'
+import pairData from '../data/letterPairs.json'
 
-const ALPHABET = 'АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ'.split('')
-
-const NOT_FIRST = new Set(['Ъ', 'Ь', 'Ы', 'Й'])
-const NOT_LAST = new Set(['Ъ', 'Ь'])
-
-const FIRST_POOL = ALPHABET.filter(c => !NOT_FIRST.has(c))
-const LAST_POOL = ALPHABET.filter(c => !NOT_LAST.has(c))
-
-function randomFrom<T>(arr: readonly T[]): T {
-  return arr[Math.floor(Math.random() * arr.length)]
+interface PairData {
+  version: number
+  generatedAt: string
+  threshold: { minWords: number; minLength: number }
+  pairs: Array<LetterPair & { count: number; examples: string[] }>
 }
 
-export function generateLetterPair(prev?: LetterPair): LetterPair {
-  for (let i = 0; i < 50; i++) {
-    const first = randomFrom(FIRST_POOL)
-    let last = randomFrom(LAST_POOL)
-    let attempts = 0
-    while (last === first && attempts < 10) {
-      last = randomFrom(LAST_POOL)
-      attempts++
-    }
-    if (last === first) continue
+const PAIRS: Array<LetterPair & { count: number; examples: string[] }> =
+  (pairData as PairData).pairs
 
-    const candidate: LetterPair = { first, last }
-    if (!prev || candidate.first !== prev.first || candidate.last !== prev.last) {
+const FALLBACK: LetterPair = { first: 'А', last: 'К' }
+
+export function generateLetterPair(prev?: LetterPair): LetterPair {
+  if (PAIRS.length === 0) return FALLBACK
+  for (let i = 0; i < 50; i++) {
+    const candidate = PAIRS[Math.floor(Math.random() * PAIRS.length)]
+    if (!prev) return candidate
+    if (candidate.first !== prev.first || candidate.last !== prev.last) {
       return candidate
     }
   }
-  return { first: 'А', last: 'К' }
+  return FALLBACK
 }
 
-export const LETTER_CONSTRAINTS = {
-  alphabet: ALPHABET,
-  notFirst: NOT_FIRST,
-  notLast: NOT_LAST,
+export function getExamples(pair: LetterPair): string[] {
+  const found = PAIRS.find(p => p.first === pair.first && p.last === pair.last)
+  return found?.examples ?? []
 }
