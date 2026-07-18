@@ -1,9 +1,10 @@
-import { useEffect, useRef, type CSSProperties } from 'react'
-import { Minus, Plus, RefreshCw } from 'lucide-react'
+import { useEffect, useRef, useState, type CSSProperties } from 'react'
+import { Eye, Minus, Plus, RefreshCw } from 'lucide-react'
 import type { PlayerId } from '../types'
 import type { GameState } from '../game/useGame'
 import { useRoundTimer } from '../game/useRoundTimer'
 import { useHaptics } from '../hooks/useHaptics'
+import { getExamples } from '../lib/letters'
 import { AppShell } from './AppShell'
 import { BrandButton } from './BrandButton'
 import { GlassCard } from './GlassCard'
@@ -85,6 +86,12 @@ function PenaltyButton({ name, onPenalize }: PenaltyButtonProps) {
 export function GameScreen({ state, awardPoint, penalize, nextWord, timerExpired }: Props) {
   const { config, scores, round, letters } = state
   const haptics = useHaptics()
+  const [showExamples, setShowExamples] = useState(false)
+  const examples = getExamples(letters)
+
+  useEffect(() => {
+    setShowExamples(false)
+  }, [letters.first, letters.last, round])
 
   const remaining = useRoundTimer({
     seconds: config.roundSec,
@@ -110,6 +117,11 @@ export function GameScreen({ state, awardPoint, penalize, nextWord, timerExpired
   const handleNextWord = () => {
     haptics.select()
     nextWord()
+  }
+
+  const handleToggleExamples = () => {
+    haptics.select()
+    setShowExamples(v => !v)
   }
 
   return (
@@ -162,6 +174,29 @@ export function GameScreen({ state, awardPoint, penalize, nextWord, timerExpired
             <RefreshCw className="w-4 h-4" strokeWidth={2.25} />
             Следующее слово
           </BrandButton>
+
+          {examples.length > 0 && (
+            <>
+              <BrandButton
+                onPress={handleToggleExamples}
+                variant="ghost"
+                className="mt-2 inline-flex items-center gap-1.5 px-3 py-1.5 !rounded-full text-xs"
+              >
+                <Eye className="w-3.5 h-3.5" strokeWidth={2.25} />
+                Не помню слово?
+              </BrandButton>
+              {showExamples && (
+                <GlassCard className="mt-3 px-4 py-3 max-w-xs">
+                  <div className="text-white/60 text-[0.65rem] uppercase tracking-[0.2em] mb-1">
+                    Примеры
+                  </div>
+                  <div className="text-white text-base font-semibold capitalize">
+                    {examples.join(' · ')}
+                  </div>
+                </GlassCard>
+              )}
+            </>
+          )}
         </div>
 
         <div className="px-5 pb-5 flex flex-col gap-2 shrink-0">
